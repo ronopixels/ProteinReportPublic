@@ -1,5 +1,0 @@
-# Overrides for production environment
-baseurl = "https://www.proteinreport.org/"
-
-[params]
-  hyas_images = true
