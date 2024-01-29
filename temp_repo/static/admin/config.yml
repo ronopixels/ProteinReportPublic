@@ -1,0 +1,662 @@
+backend:
+  name: git-gateway
+  branch: main # Branch to update (optional; defaults to master)
+
+local_backend: true
+
+# These lines should *not* be indented
+media_folder: "static/images/uploads" # Media files will be stored in the repo under static/images/uploads
+public_folder: "/images/uploads" # The src attribute for uploaded media will begin with /images/uploads
+
+collections:
+  ########## Articles ##########
+  - name: "articles" # Used in routes, e.g., /admin/collections/blog
+    label: "Articles" # Used in the UI
+    label_singular: "Article"
+    folder: "content/articles" # The path to the folder where the documents are stored
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true # Allow users to create new documents in this collection
+    # slug: "{{slug}}/index.md" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Updated", name: "lastmod", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - label: "Contributors"
+        name: "contributors"
+        widget: "relation"
+        collection: "contributors"
+        multiple: true
+        search_fields: ["title", "uuid"]
+        value_field: "uuid"
+        display_fields: ["title"]
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - label: "Proteins"
+        name: "proteins"
+        widget: "select"
+        multiple: true
+        options:
+          [
+            "Plant-Based",
+            "Cell-Based",
+            "Microbial",
+            "Fungi",
+            "Algae",
+            "Animal",
+            "Insect",
+            "Molecular Farming"
+          ]
+      - label: "Products"
+        name: "products"
+        widget: "select"
+        multiple: true
+        options:
+          [
+            "Meat",
+            "Dairy",
+            "Eggs",
+            "Seafood",
+            "Ingredients",
+            "Pet Food",
+            "Feed"
+          ]
+      - label: "Topics"
+        name: "topics"
+        widget: "select"
+        multiple: true
+        options:
+          ["Business", "Environment", "Policy", "Sci-Tech", "Health", "Culture"]
+      - label: "Regions"
+        name: "regions"
+        widget: "select"
+        multiple: true
+        options:
+          [
+            "Africa",
+            "Asia",
+            "Europe",
+            "International",
+            "Latin America & Caribbean",
+            "Middle East",
+            "Oceania",
+            "US & Canada"
+          ]
+      - label: "Tech Segment"
+        name: "tech_segment"
+        widget: "select"
+        multiple: true
+        options:
+          [
+            "Agriculture & Plant Protein",
+            "Fungiculture & Mycoprotein",
+            "Algaculture & Algal Protein",
+            "Cell Culture & Animal Protein",
+            "Microbial & Precision Fermentation",
+            "Molecular Farming",
+            "Livestock & Animals"
+          ]
+      - label: "Flags"
+        name: "flags"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Featured",
+            "Explainer",
+            "Analysis",
+            "Opinion",
+            "Interview",
+            "Video"
+          ]
+      - label: "Mentioned Companies"
+        name: "directory"
+        widget: "relation"
+        collection: "directory"
+        multiple: true
+        required: false
+        search_fields: ["title", "uuid"]
+        value_field: "uuid"
+        display_fields: ["title"]
+      - label: "Featured Image"
+        name: "featured_image"
+        widget: "image"
+        required: false
+      - { label: "Featured Image Caption", name: "featured_image_caption", widget: "string", required: false }
+      - label: "Additional Images"
+        name: "additional_images"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Image", name: "src", widget: "image" }
+          - { label: "Alt", name: "alt", widget: "string", required: false }
+          - { label: "Title", name: "title", widget: "string", required: false }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - label: "Images"
+        name: "images"
+        widget: "list"
+        required: false
+        allow_add: true
+        field: {label: "Image", name: "src", widget: "string"}
+      - { label : "Draft", name: "draft", widget: "boolean", required: false }
+      - { label: "UUID", name: "uuid", widget: "uuid" }
+      - { label: "Weight", name: "weight", widget: "number", required: false, default: 5000, value_type: "int"}
+      - { label: "Content", name: "body", widget: "markdown" }
+  ########## Newswire ##########
+  - name: "newswire" # Used in routes, e.g., /admin/collections/blog
+    label: "Newswire" # Used in the UI
+    label_singular: "Press Release"
+    folder: "content/newswire" # The path to the folder where the documents are stored
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true # Allow users to create new documents in this collection
+    # slug: "{{slug}}/index.md" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Updated", name: "lastmod", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - label: "Company"
+        name: "company"
+        widget: "relation"
+        collection: "directory"
+        search_fields: ["uuid", "title"]
+        value_field: "uuid"
+        display_fields: ["title"]
+        required: false
+      - {
+          label: "Company Name",
+          name: "company_name",
+          widget: "string",
+          required: false
+        }
+      - {
+          label: "Company Link",
+          name: "company_link",
+          widget: "string",
+          required: false
+        }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - label: "Proteins"
+        name: "proteins"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Plant-Based",
+            "Cell-Based",
+            "Microbial",
+            "Fungi",
+            "Algae",
+            "Animal",
+            "Insect",
+            "Molecular Farming"
+          ]
+      - label: "Products"
+        name: "products"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Meat",
+            "Dairy",
+            "Eggs",
+            "Seafood",
+            "Ingredients",
+            "Pet Food",
+            "Feed"
+          ]
+      - label: "Topics"
+        name: "topics"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          ["Business", "Environment", "Policy", "Sci-Tech", "Health", "Culture"]
+      - label: "Regions"
+        name: "regions"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Africa",
+            "Asia",
+            "Europe",
+            "International",
+            "Latin America & Caribbean",
+            "Middle East",
+            "Oceania",
+            "US & Canada"
+          ]
+      - label: "Flags"
+        name: "flags"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Investments",
+            "New Products"
+          ]
+      - label: "Mentioned Companies"
+        name: "directory"
+        widget: "relation"
+        collection: "directory"
+        multiple: true
+        required: false
+        search_fields: ["title", "uuid"]
+        value_field: "uuid"
+        display_fields: ["title"]
+      - label: "Featured Image"
+        name: "featured_image"
+        widget: "image"
+        required: false
+      - { label: "Featured Image Caption", name: "featured_image_caption", widget: "string", required: false }
+      - label: "Additional Images"
+        name: "additional_images"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Image", name: "src", widget: "image" }
+          - { label: "Alt", name: "alt", widget: "string", required: false }
+          - { label: "Title", name: "title", widget: "string", required: false }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - label: "Images"
+        name: "images"
+        widget: "list"
+        required: false
+        allow_add: true
+        field: {label: "Image", name: "src", widget: "string"}
+      - { label : "Draft", name: "draft", widget: "boolean", required: false }
+      - { label: "UUID", name: "uuid", widget: "uuid" }
+      - { label: "Content", name: "body", widget: "markdown" }
+  ########## Directory ##########
+  - name: "directory" # Used in routes, e.g., /admin/collections/blog
+    label: "Directory" # Used in the UI
+    label_singular: "Directory Entry"
+    folder: "content/directory" # The path to the folder where the documents are stored
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true # Allow users to create new documents in this collection
+    # slug: "{{slug}}/index.md" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Updated", name: "lastmod", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - { label: "Logo", name: "featured_image", widget: "image", required: false }
+      - label: "Images"
+        name: "images"
+        widget: "list"
+        required: false
+        allow_add: true
+        field: {label: "Image", name: "src", widget: "string"}
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - label: "Proteins"
+        name: "proteins"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Plant-Based",
+            "Cell-Based",
+            "Microbial",
+            "Fungi",
+            "Algae",
+            "Animal",
+            "Insect",
+            "Molecular Farming"
+          ]
+      - label: "Products"
+        name: "products"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Meat",
+            "Dairy",
+            "Eggs",
+            "Seafood",
+            "Ingredients",
+            "Pet Food",
+            "Feed",
+            "Technology & Equipment",
+            "Cell Culture Media",
+            "Scaffolding & Structure",
+            "Materials"
+          ]
+      - label: "Country"
+        name: "country"
+        widget: "select"
+        multiple: false
+        required: false
+        options: ["Ascension Island", "Andorra", "United Arab Emirates", "Afghanistan", "Antigua & Barbuda", "Anguilla", "Albania", "Armenia", "Angola", "Antarctica", "Argentina", "American Samoa", "Austria", "Australia", "Aruba", "Åland Islands", "Azerbaijan", "Bosnia & Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Burundi", "Benin", "St. Barthélemy", "Bermuda", "Brunei", "Bolivia", "Caribbean Netherlands", "Brazil", "Bahamas", "Bhutan", "Bouvet Island", "Botswana", "Belarus", "Belize", "Canada", "Cocos (Keeling) Islands", "Congo - Kinshasa", "Central African Republic", "Congo - Brazzaville", "Switzerland", "Côte d’Ivoire", "Cook Islands", "Chile", "Cameroon", "China", "Colombia", "Clipperton Island", "Costa Rica", "Cuba", "Cape Verde", "Curaçao", "Christmas Island", "Cyprus", "Czechia", "Germany", "Diego Garcia", "Djibouti", "Denmark", "Dominica", "Dominican Republic", "Algeria", "Ecuador", "Estonia", "Egypt", "Western Sahara", "Eritrea", "Spain", "Ethiopia", "Finland", "Fiji", "Falkland Islands", "Micronesia", "Faroe Islands", "France", "Gabon", "United Kingdom", "Grenada", "Georgia", "French Guiana", "Guernsey", "Ghana", "Gibraltar", "Greenland", "Gambia", "Guinea", "Guadeloupe", "Equatorial Guinea", "Greece", "South Georgia & South Sandwich Islands", "Guatemala", "Guam", "Guinea-Bissau", "Guyana", "Hong Kong SAR China", "Heard & McDonald Islands", "Honduras", "Croatia", "Haiti", "Hungary", "Canary Islands", "Indonesia", "Ireland", "Israel", "Isle of Man", "India", "British Indian Ocean Territory", "Iraq", "Iran", "Iceland", "Italy", "Jersey", "Jamaica", "Jordan", "Japan", "Kenya", "Kyrgyzstan", "Cambodia", "Kiribati", "Comoros", "St. Kitts & Nevis", "North Korea", "South Korea", "Kuwait", "Cayman Islands", "Kazakhstan", "Laos", "Lebanon", "St. Lucia", "Liechtenstein", "Sri Lanka", "Liberia", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Libya", "Morocco", "Monaco", "Moldova", "Montenegro", "St. Martin", "Madagascar", "Marshall Islands", "North Macedonia", "Mali", "Myanmar (Burma)", "Mongolia", "Macao SAR China", "Northern Mariana Islands", "Martinique", "Mauritania", "Montserrat", "Malta", "Mauritius", "Maldives", "Malawi", "Mexico", "Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger", "Norfolk Island", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "Nauru", "Niue", "New Zealand", "Oman", "Panama", "Peru", "French Polynesia", "Papua New Guinea", "Philippines", "Pakistan", "Poland", "St. Pierre & Miquelon", "Pitcairn Islands", "Puerto Rico", "Palestinian Territories", "Portugal", "Palau", "Paraguay", "Qatar", "Réunion", "Romania", "Serbia", "Russia", "Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles", "Sudan", "Sweden", "Singapore", "St. Helena", "Slovenia", "Svalbard & Jan Mayen", "Slovakia", "Sierra Leone", "San Marino", "Senegal", "Somalia", "Suriname", "South Sudan", "São Tomé & Príncipe", "El Salvador", "Sint Maarten", "Syria", "Eswatini", "Tristan da Cunha", "Turks & Caicos Islands", "Chad", "Togo", "Thailand", "Tajikistan", "Tokelau", "Timor-Leste", "Turkmenistan", "Tunisia", "Tonga", "Turkey", "Trinidad & Tobago", "Tuvalu", "Taiwan", "Tanzania", "Ukraine", "Uganda", "United States", "Uruguay", "Uzbekistan", "Vatican City", "St. Vincent & Grenadines", "Venezuela", "British Virgin Islands", "U.S. Virgin Islands", "Vietnam", "Vanuatu", "Wallis & Futuna", "Samoa", "Kosovo", "Yemen", "Mayotte", "South Africa", "Zambia", "Zimbabwe"]
+      - { label: "City", name: "city", widget: "string", required: false }
+      - { label: "Founded", name: "founded", widget: "number", required: false }
+      - { label: "Founders", name: "founders", widget: "string", required: false }
+      - { label: "Website", name: "website", widget: "string", required: false }
+      - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
+      - { label: "Twitter", name: "twitter", widget: "string", required: false }
+      - { label: "Instagram", name: "instagram", widget: "string", required: false }
+      - { label: "Facebook", name: "facebook", widget: "string", required: false }
+      - { label: "Youtube", name: "youtube", widget: "string", required: false }
+      - { label: "Crunchbase", name: "crunchbase", widget: "string", required: false }
+      - label: "Geolocation [lat,lon]"
+        name: "location"
+        widget: "list"
+        min: 2
+        max: 2
+        allow_add: false
+        required: false
+        field: { label: "Lat-Lon", name: "lat-lon", widget: "number", value_type: "float" }
+      - { label: "Geolocation", name: "location_geojson", widget: "map", required: false }
+      - { label: "UUID", name: "uuid", widget: "uuid" }
+      - { label: "Content", name: "body", widget: "markdown" } 
+          
+  ########## Contributors ##########
+  - name: "contributors" # Used in routes, e.g., /admin/collections/blog
+    label: "Contributors" # Used in the UI
+    label_singular: "Contributor"
+    folder: "content/contributors" # The path to the folder where the documents are stored
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true # Allow users to create new documents in this collection
+    # slug: "{{slug}}/index.md" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: "Name", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Updated", name: "lastmod", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Author Image", name: "featured_image", widget: "image", required: false }
+      - label: "Images"
+        name: "images"
+        widget: "list"
+        required: false
+        allow_add: true
+        field: {label: "Image", name: "src", widget: "string"}
+      - { label: "Website", name: "website", widget: "string", required: false }
+      - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
+      - { label: "Twitter", name: "twitter", widget: "string", required: false }
+      - { label: "Instagram", name: "instagram", widget: "string", required: false }
+      - { label: "Facebook", name: "facebook", widget: "string", required: false }
+      - { label: "Youtube", name: "youtube", widget: "string", required: false }
+      - { label : "Draft", name: "draft", widget: "boolean", required: false }
+      - { label: "UUID", name: "uuid", widget: "uuid" }
+      - { label: "Weight", name: "weight", widget: "number", required: false, default: 5000, value_type: "int"}
+      - { label: "Content", name: "body", widget: "markdown" }
+  ########## Events ##########
+  - name: "events" # Used in routes, e.g., /admin/collections/blog
+    label: "Events" # Used in the UI
+    label_singular: "Event"
+    folder: "content/events" # The path to the folder where the documents are stored
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true # Allow users to create new documents in this collection
+    # slug: "{{slug}}/index.md" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Updated", name: "lastmod", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - label: "Proteins"
+        name: "proteins"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Plant-Based",
+            "Cell-Based",
+            "Microbial",
+            "Fungi",
+            "Algae",
+            "Animal",
+            "Insect",
+            "Molecular Farming"
+          ]
+      - label: "Products"
+        name: "products"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Meat",
+            "Dairy",
+            "Eggs",
+            "Seafood",
+            "Ingredients",
+            "Pet Food",
+            "Feed"
+          ]
+      - label: "Topics"
+        name: "topics"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          ["Business", "Environment", "Policy", "Sci-Tech", "Health", "Culture"]
+      - label: "Regions"
+        name: "regions"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Africa",
+            "Asia",
+            "Europe",
+            "International",
+            "Latin America & Caribbean",
+            "Middle East",
+            "Oceania",
+            "US & Canada"
+          ]
+      - label: "Images"
+        name: "images"
+        widget: "list"
+        required: false
+        allow_add: true
+        field: {label: "Image", name: "src", widget: "string"}
+      - { label: "Logo", name: "featured_image", widget: "image", required: false }    
+      - { label: "Banner", name: "banner_image", widget: "image", required: false }
+      - label: "Start Date"
+        name: "start_date"
+        widget: "datetime"
+        default: ""
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+      - label: "End Date"
+        name: "end_date"
+        widget: "datetime"
+        default: ""
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+      - label: "Country"
+        name: "country"
+        widget: "select"
+        multiple: false
+        required: false
+        options: ["Ascension Island", "Andorra", "United Arab Emirates", "Afghanistan", "Antigua & Barbuda", "Anguilla", "Albania", "Armenia", "Angola", "Antarctica", "Argentina", "American Samoa", "Austria", "Australia", "Aruba", "Åland Islands", "Azerbaijan", "Bosnia & Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Burundi", "Benin", "St. Barthélemy", "Bermuda", "Brunei", "Bolivia", "Caribbean Netherlands", "Brazil", "Bahamas", "Bhutan", "Bouvet Island", "Botswana", "Belarus", "Belize", "Canada", "Cocos (Keeling) Islands", "Congo - Kinshasa", "Central African Republic", "Congo - Brazzaville", "Switzerland", "Côte d’Ivoire", "Cook Islands", "Chile", "Cameroon", "China", "Colombia", "Clipperton Island", "Costa Rica", "Cuba", "Cape Verde", "Curaçao", "Christmas Island", "Cyprus", "Czechia", "Germany", "Diego Garcia", "Djibouti", "Denmark", "Dominica", "Dominican Republic", "Algeria", "Ecuador", "Estonia", "Egypt", "Western Sahara", "Eritrea", "Spain", "Ethiopia", "Finland", "Fiji", "Falkland Islands", "Micronesia", "Faroe Islands", "France", "Gabon", "United Kingdom", "Grenada", "Georgia", "French Guiana", "Guernsey", "Ghana", "Gibraltar", "Greenland", "Gambia", "Guinea", "Guadeloupe", "Equatorial Guinea", "Greece", "South Georgia & South Sandwich Islands", "Guatemala", "Guam", "Guinea-Bissau", "Guyana", "Hong Kong SAR China", "Heard & McDonald Islands", "Honduras", "Croatia", "Haiti", "Hungary", "Canary Islands", "Indonesia", "Ireland", "Israel", "Isle of Man", "India", "British Indian Ocean Territory", "Iraq", "Iran", "Iceland", "Italy", "Jersey", "Jamaica", "Jordan", "Japan", "Kenya", "Kyrgyzstan", "Cambodia", "Kiribati", "Comoros", "St. Kitts & Nevis", "North Korea", "South Korea", "Kuwait", "Cayman Islands", "Kazakhstan", "Laos", "Lebanon", "St. Lucia", "Liechtenstein", "Sri Lanka", "Liberia", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Libya", "Morocco", "Monaco", "Moldova", "Montenegro", "St. Martin", "Madagascar", "Marshall Islands", "North Macedonia", "Mali", "Myanmar (Burma)", "Mongolia", "Macao SAR China", "Northern Mariana Islands", "Martinique", "Mauritania", "Montserrat", "Malta", "Mauritius", "Maldives", "Malawi", "Mexico", "Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger", "Norfolk Island", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "Nauru", "Niue", "New Zealand", "Oman", "Panama", "Peru", "French Polynesia", "Papua New Guinea", "Philippines", "Pakistan", "Poland", "St. Pierre & Miquelon", "Pitcairn Islands", "Puerto Rico", "Palestinian Territories", "Portugal", "Palau", "Paraguay", "Qatar", "Réunion", "Romania", "Serbia", "Russia", "Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles", "Sudan", "Sweden", "Singapore", "St. Helena", "Slovenia", "Svalbard & Jan Mayen", "Slovakia", "Sierra Leone", "San Marino", "Senegal", "Somalia", "Suriname", "South Sudan", "São Tomé & Príncipe", "El Salvador", "Sint Maarten", "Syria", "Eswatini", "Tristan da Cunha", "Turks & Caicos Islands", "Chad", "Togo", "Thailand", "Tajikistan", "Tokelau", "Timor-Leste", "Turkmenistan", "Tunisia", "Tonga", "Turkey", "Trinidad & Tobago", "Tuvalu", "Taiwan", "Tanzania", "Ukraine", "Uganda", "United States", "Uruguay", "Uzbekistan", "Vatican City", "St. Vincent & Grenadines", "Venezuela", "British Virgin Islands", "U.S. Virgin Islands", "Vietnam", "Vanuatu", "Wallis & Futuna", "Samoa", "Kosovo", "Yemen", "Mayotte", "South Africa", "Zambia", "Zimbabwe"]
+      - { label: "City", name: "city", widget: "string", required: false }
+      - { label: "Online", name: "online", widget: "boolean", required: false, hint: "Is this a webinar, virtual event, or hybrid event with a virtual option?"}
+      - { label: "Website", name: "website", widget: "string", required: false }
+      - { label: "UUID", name: "uuid", widget: "uuid" }
+      - { label: "Content", name: "body", widget: "markdown" }
+  ########## Jobs ##########
+  - name: "jobs" # Used in routes, e.g., /admin/collections/blog
+    label: "Jobs" # Used in the UI
+    label_singular: "Job"
+    folder: "content/jobs" # The path to the folder where the documents are stored
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true # Allow users to create new documents in this collection
+    # slug: "{{slug}}/index.md" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: "Name", name: "title", widget: "string" }
+      - label: "Company"
+        name: "company"
+        widget: "relation"
+        collection: "directory"
+        search_fields: ["uuid", "title"]
+        value_field: "uuid"
+        display_fields: ["title"]
+      - label: "Logo"
+        name: "images"
+        widget: "relation"
+        collection: "directory"
+        search_fields: ["uuid", "title"]
+        value_field: "images[0].src"
+        display_fields: ["title"]
+        required: false
+      - { label: "Company Name", name: "company_name", widget: "string", required: false }
+      - { label: "Company Link", name: "company_link", widget: "string", required: false }
+      #- {label: "Image", name: "images", widget: "image"}
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "UUID", name: "uuid", widget: "uuid" }
+      - { label: "Content", name: "body", widget: "markdown" }
+
+  ########## Partners ##########
+  - name: "partners" # Used in routes, e.g., /admin/collections/blog
+    label: "Partners" # Used in the UI
+    label_singular: "Partner"
+    folder: "content/partners" # The path to the folder where the documents are stored
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true # Allow users to create new documents in this collection
+    # slug: "{{slug}}/index.md" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: "Name", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Updated", name: "lastmod", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - { label: "Link", name: "link", widget: "string", required: false }
+      - label: "Partner Type"
+        name: "partner_type"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          ["Event-Media", "Sponsor", "Essay Contest 2021 Judge"]
+      - { label: "Image", name: "featured_image", widget: "image", required: false }
+      - { label: "Active", name: "active", widget: "boolean", required: false }
+      - { label: "Weight", name: "weight", widget: "number", required: false, default: 5000, value_type: "int"}
+      - { label: "UUID", name: "uuid", widget: "uuid" }
+      - label: "_build"
+        name: "_build"
+        widget: "object"
+        collapsed: true
+        hint: "Do NOT change anything here."
+        fields:
+          - {label: "list", name: "list", widget: "boolean", default: true}
+          - {label: "publishResources", name: "publishResources", widget: "boolean", default: true}
+          - {label: "render", name: "render", widget: "boolean", default: false}
+
+  ########## Resources ##########
+  - name: "resources" # Used in routes, e.g., /admin/collections/blog
+    label: "Resources" # Used in the UI
+    label_singular: "Resource"
+    folder: "content/resources" # The path to the folder where the documents are stored
+    path: "{{slug}}/index"
+    media_folder: ""
+    public_folder: ""
+    create: true # Allow users to create new documents in this collection
+    # slug: "{{slug}}/index.md" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Updated", name: "lastmod", widget: "datetime", format: "YYYY-MM-DD HH:mm:ss"}
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - label: "Proteins"
+        name: "proteins"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Plant-Based",
+            "Cell-Based",
+            "Microbial",
+            "Fungi",
+            "Algae",
+            "Animal",
+            "Insect",
+            "Molecular Farming"
+          ]
+      - label: "Products"
+        name: "products"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Meat",
+            "Dairy",
+            "Eggs",
+            "Seafood",
+            "Ingredients",
+            "Pet Food",
+            "Feed"
+          ]
+      - label: "Topics"
+        name: "topics"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          ["Business", "Environment", "Policy", "Sci-Tech", "Health", "Culture"]
+      - label: "Regions"
+        name: "regions"
+        widget: "select"
+        multiple: true
+        required: false
+        options:
+          [
+            "Africa",
+            "Asia",
+            "Europe",
+            "International",
+            "Latin America & Caribbean",
+            "Middle East",
+            "Oceania",
+            "US & Canada"
+          ]
+      - { label: "Report Cover", name: "featured_image", widget: "image", required: false }
+      - label: "Images"
+        name: "images"
+        widget: "list"
+        required: false
+        allow_add: true
+        field: {label: "Image", name: "src", widget: "string"}
+      - label: "Resource Type"
+        name: "resource_type"
+        widget: "select"
+        multiple: false
+        required: false
+        options:
+          ["industry", "academic"]
+      - { label: "Link", name: "link", widget: "string", required: false }
+      - { label: "UUID", name: "uuid", widget: "uuid" }
+      - { label: "Content", name: "body", widget: "markdown" }

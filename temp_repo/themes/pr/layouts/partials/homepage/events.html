@@ -1,0 +1,25 @@
+<section id="events" class="w-full">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="w-full py-12">
+            <h2 class="text-7xl">Events</h2>
+            <p>Upcoming conferences and summits</p>
+        </div>
+        <div class="w-full grid grid-cols-1 auto-rows-fr gap-8">
+            {{ $date := now.Format "2006-01-02" }}
+            {{ $events := where .Site.RegularPages "Section" "events" }}
+            
+            {{ $filteredEvents := slice }}
+            {{ range $events }}
+                {{ $endDate := .Params.end_date | dateFormat "2006-01-02" }}
+                {{ if ge $endDate $date }}
+                    {{ $filteredEvents = $filteredEvents | union (slice .) }}
+                {{ end }}
+            {{ end }}
+        
+            {{ $filteredEvents = sort $filteredEvents "Params.start_date" "asc" }}
+            {{ range first 5 $filteredEvents }}
+                {{ partial "event/card.html" . }}
+            {{ end }}
+        </div>
+    </div>
+</section>
