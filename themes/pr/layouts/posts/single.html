@@ -1,0 +1,11 @@
+{{ define "main" }} {{ partial "main/page-title.html" . }} {{ .Content }} {{-
+$jsFileName := .Title | anchorize -}} {{- $pathWithoutExtension := (printf
+"%s%s" "scripts/" $jsFileName) -}} {{- $pathJS := (printf "%s%s"
+$pathWithoutExtension ".js" ) -}} {{- $pathJSX := (printf "%s%s"
+$pathWithoutExtension ".jsx" ) -}} {{- if (fileExists (printf "%s%s" "assets/"
+$pathJS)) -}}
+<script src="{{ $pathJS | absURL }}"></script>
+{{- else if (fileExists (printf "%s%s" "assets/" $pathJSX)) -}} {{- $app :=
+resources.Get $pathJSX | babel -}}
+<script src="{{ $app.RelPermalink | absURL }}"></script>
+{{- end -}} {{ end }}

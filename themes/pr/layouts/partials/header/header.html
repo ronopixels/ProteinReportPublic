@@ -1,0 +1,11 @@
+<header>
+  {{ partial "header/nav.html" . }} {{- if and .IsPage .Params.jsFiles -}} {{-
+  range .Params.jsFiles -}}
+  <script src="{{ . }}"></script>
+  {{- end -}} {{- end -}}
+
+  <script>
+    console.log("Anchorized title: {{ .Title | anchorize }}");
+  </script>
+</header>
+<div class="pb-12"></div>

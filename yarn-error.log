@@ -1,0 +1,84 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Path finder\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @bable/cli @babel/core @balbel/preset-react -D
+
+PATH: 
+  C:\Users\Path finder\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Path finder\bin;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\Users\Path finder\scoop\shims;C:\Users\Path finder\AppData\Local\Microsoft\WindowsApps;C:\Users\Path finder\AppData\Local\Programs\Hyper\resources\bin;C:\Hugo\bin;C:\Users\Path finder\AppData\Roaming\npm;C:\Users\Path finder\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.9.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@bable%2fcli: Not found
+      at params.callback [as _callback] (C:\Users\Path finder\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
+      at self.callback (C:\Users\Path finder\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
+      at Request.emit (node:events:514:28)
+      at Request.<anonymous> (C:\Users\Path finder\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141862:10)
+      at Request.emit (node:events:514:28)
+      at IncomingMessage.<anonymous> (C:\Users\Path finder\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141784:12)
+      at Object.onceWrapper (node:events:628:28)
+      at IncomingMessage.emit (node:events:526:35)
+      at endReadableNT (node:internal/streams/readable:1408:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+npm manifest: 
+  {
+    "name": "pr",
+    "version": "0.0.0",
+    "description": "Hyas Tailwind CSS starter with recommended integrations",
+    "author": "Hyas",
+    "license": "MIT",
+    "scripts": {
+      "dev": "exec-bin node_modules/.bin/hugo/hugo server --bind=0.0.0.0 --disableFastRender --baseURL=http://localhost --noHTTPCache",
+      "dev:drafts": "exec-bin node_modules/.bin/hugo/hugo server --bind=0.0.0.0 --disableFastRender --baseURL=http://localhost --noHTTPCache --buildDrafts",
+      "create": "exec-bin node_modules/.bin/hugo/hugo new",
+      "lint": "npm run lint:scripts && npm run lint:styles && npm run lint:markdown",
+      "lint:scripts": "eslint --cache config",
+      "lint:styles": "stylelint --cache \"assets/scss/**/*.{css,sass,scss}\"",
+      "lint:markdown": "markdownlint-cli2 \"*.md\" \"content/**/*.md\"",
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "exec-bin node_modules/.bin/hugo/hugo --minify",
+      "preview": "http-server --gzip --brotli --ext=html --cors",
+      "clean": "npm run clean:build && npm run clean:lint && npm run clean:install",
+      "clean:build": "shx rm -rf public resources .hugo_build.lock hugo_stats.json",
+      "clean:install": "shx rm -rf node_modules package-lock.json yarn.lock pnpm-lock.yaml",
+      "clean:lint": "shx rm -rf .eslintcache .stylelintcache",
+      "preinfo": "npm version",
+      "info": "npm list",
+      "postinfo": "exec-bin node_modules/.bin/hugo/hugo version",
+      "postinstall": "shx rm -rf node_modules/.bin/hugo && shx mkdir node_modules/.bin/hugo && shx cp node_modules/gethyas/node_modules/.bin/hugo/* node_modules/.bin/hugo"
+    },
+    "devDependencies": {
+      "@hyas/images": "^1.0.2",
+      "@hyas/seo": "^1.0.3",
+      "@hyas/tailwindcss": "^1.0.2",
+      "gethyas": "^2.1.0"
+    },
+    "engines": {
+      "node": ">=16.12.0"
+    },
+    "dependencies": {
+      "@glidejs/glide": "^3.6.0",
+      "@netlify/functions": "^2.0.2",
+      "@tabler/icons-png": "^2.34.0",
+      "axios": "^1.4.0",
+      "flexsearch": "^0.7.31",
+      "glightbox": "^3.2.0",
+      "leaflet": "^1.9.4",
+      "leaflet-gesture-handling": "^1.2.2",
+      "leaflet.markercluster": "^1.5.3",
+      "netlify-identity-widget": "^1.9.2",
+      "node-fetch": "^2.7.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
