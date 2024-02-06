@@ -1,0 +1,1 @@
+https://github.com/ronopixels/ProteinReport/raw/f5b49633f43efc7971f50dfebfccc8c44af15291/content%2Fnewswire%2Fbeatae-veniam-ut-ma%2Findex.md
