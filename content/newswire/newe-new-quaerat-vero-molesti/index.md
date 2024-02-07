@@ -1,4 +1,3 @@
- -0,0 1,28 
 
     ---
     title: Newe New Quaerat vero molesti
@@ -26,5 +25,3 @@
     
 
     Non eos similique al.
-    
-\ No newline at end of file
