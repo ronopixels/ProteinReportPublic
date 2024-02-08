@@ -1,4 +1,3 @@
- -0,0 1,28 
 
     ---
     title: Laboris accusamus cu
@@ -26,5 +25,3 @@
     
 
     Quod ut assumenda se.
-    
-\ No newline at end of file
